@@ -1,0 +1,222 @@
+const weatherForm = document.querySelector(".weatherForm");
+const cityInput = document.querySelector(".cityInput");
+const weatherOutput = document.querySelector(".weatherOutput"); // Target the output container
+const apikey = "8e644712eab74673fde379b617d9bc51";
+
+weatherForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const city = cityInput.value.trim();
+
+    if (city) {
+        try {
+            const weatherData = await getWeatherData(city);
+            displayWeatherInfo(weatherData);
+        } catch (error) {
+            console.error(error);
+            displayError("Could not fetch weather data.");
+        } finally {
+            cityInput.value = ""; // Clear input
+        }
+    } else {
+        displayError("Please enter a city.");
+    }
+});
+
+async function getWeatherData(city) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}`;
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+        throw new Error("Could not fetch weather data.");
+    }
+
+    return await response.json();
+}
+
+function displayWeatherInfo(data) {
+    const { name: cityName, main: { temp, humidity }, weather: [{ description, id }] } = data;
+
+    // Clear previous content
+    clearWeatherDisplay();
+
+    // Create and display individual boxes for each detail
+    createAndAppendBox("City", cityName, "cityDisplay");
+    createAndAppendBox("Temperature", `${(temp - 273.15).toFixed(1)}\u00B0C`, "tempDisplay");
+    createAndAppendBox("Humidity", `${humidity}%`, "humidityDisplay");
+    createAndAppendBox("Description", `${getWeatherEmoji(id)} ${description}`, "descDisplay");
+}
+
+function createAndAppendBox(label, value, className) {
+    const box = document.createElement("div");
+    box.className = className;
+
+    const labelElement = document.createElement("h3");
+    labelElement.textContent = `${label}:`;
+
+    const valueElement = document.createElement("p");
+    valueElement.textContent = value;
+
+    box.appendChild(labelElement);
+    box.appendChild(valueElement);
+
+    weatherOutput.appendChild(box); // Append to the weather output container
+}
+
+function getWeatherEmoji(weatherId) {
+    switch (true) {
+        case weatherId >= 200 && weatherId < 300:
+            return "⛈️";
+        case weatherId >= 300 && weatherId < 400:
+            return "🌧️";
+        case weatherId >= 500 && weatherId < 600:
+            return "🌧️";
+        case weatherId >= 600 && weatherId < 700:
+            return "❄️";
+        case weatherId >= 700 && weatherId < 800:
+            return "🌫️";
+        case weatherId === 800:
+            return "☀️";
+        case weatherId >= 801 && weatherId < 810:
+            return "☁️";
+        default:
+            return "?";
+    }
+}
+
+function displayError(message) {
+    clearWeatherDisplay();
+
+    const errorBox = document.createElement("div");
+    errorBox.className = "errorDisplay";
+    errorBox.textContent = message;
+
+    weatherOutput.appendChild(errorBox); // Append to the weather output container
+}
+
+function clearWeatherDisplay() {
+    // Remove all dynamically added weather boxes
+    weatherOutput.innerHTML = ""; // Clear previous outputs
+}
+//css//
+body{
+    font-family: Arial,sans-serif;
+    background-color: white;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image:url(../sea.jpg);
+    height: 100vh; 
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; 
+}
+/* General container styling */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Weather form styling */
+.weatherForm {
+    margin: 50px 0;
+    text-align: center;
+}
+
+.cityInput {
+    padding: 10px;
+    font-size: 1.2rem;
+    border:none;
+    border-radius: 7px;
+    font-family:georgia;
+    
+    width: 300px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: rgb(21, 122, 245);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family:georgia;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(40, 109, 239);
+}
+
+/* Weather output container for displaying details */
+.weatherOutput {
+    display: flex;
+    flex-wrap: wrap; /* Wraps to the next row if needed */
+    justify-content: center; /* Centers items horizontally */
+    gap: 20px; /* Adds space between items */
+    margin-top: 20px;
+    width: 100%; /* Full width for flexibility */
+}
+
+/* Individual weather detail boxes */
+.cityDisplay, .tempDisplay, .humidityDisplay, .descDisplay, .errorDisplay {
+    background:white;
+    border: 3px solid rgb(238, 236, 236);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 200px; /* Fixed width for uniformity */
+    box-shadow: 2px 2px 4px rgba(230, 228, 228, 0.4);
+    color:#3FA2F6;
+    margin-top: 80px;
+}
+
+/* Error message box styling */
+.errorDisplay {
+    color: red;
+    width: 100%; /* Error spans the entire row */
+    text-align: center;
+}
+
+/* Responsive styles for smaller screens (mobile) */
+@media (max-width: 768px) {
+    .weatherOutput {
+        flex-direction: column; /* Stacks boxes vertically */
+        align-items: center; /* Centers items vertically */
+        gap: 10px; /* Reduces gap for smaller screens */
+    }
+
+    .cityDisplay, .tempDisplay, .humidityDisplay, .descDisplay {
+        width: 90%; /* Adjusts width to fit within mobile screens */
+    }
+}
+
+@media (min-width: 769px) {
+    /* Ensures horizontal layout on laptops and larger devices */
+    .weatherOutput {
+        flex-direction: row;
+    }
+}
+
+
+
+
+
+
+/* Individual info boxes */
+.infoBox {
+    background-color: #ffffff;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+}

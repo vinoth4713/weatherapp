@@ -1,0 +1,128 @@
+body{
+    font-family: Arial,sans-serif;
+    background-color: white;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image:url(../sea.jpg);
+    height: 100vh; 
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; 
+}
+/* General container styling */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Weather form styling */
+.weatherForm {
+    margin: 50px 0;
+    text-align: center;
+}
+
+.cityInput {
+    padding: 10px;
+    font-size: 1.2rem;
+    border:none;
+    border-radius: 7px;
+    font-family:georgia;
+    
+    width: 300px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: rgb(21, 122, 245);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family:georgia;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(40, 109, 239);
+}
+
+/* Weather output container for displaying details */
+.weatherOutput {
+    display: flex;
+    flex-wrap: wrap; /* Wraps to the next row if needed */
+    justify-content: center; /* Centers items horizontally */
+    gap: 20px; /* Adds space between items */
+    margin-top: 20px;
+    width: 100%; /* Full width for flexibility */
+}
+
+/* Individual weather detail boxes */
+.cityDisplay, .tempDisplay, .humidityDisplay, .descDisplay, .errorDisplay {
+    background:white;
+    border: 3px solid rgb(238, 236, 236);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 200px; /* Fixed width for uniformity */
+    box-shadow: 2px 2px 4px rgba(230, 228, 228, 0.4);
+    color:#3FA2F6;
+    margin-top: 80px;
+}
+
+/* Error message box styling */
+.errorDisplay {
+    color: red;
+    width: 100%; /* Error spans the entire row */
+    text-align: center;
+}
+/* Container for weather details */
+
+
+
+/* Responsive styles for smaller screens (mobile) */
+@media (max-width: 768px) {
+    .weatherOutput {
+        flex-direction: column; /* Stacks boxes vertically */
+        align-items: center; /* Centers items vertically */
+        gap: 10px; /* Reduces gap for smaller screens */
+    }
+
+    .cityDisplay, .tempDisplay, .humidityDisplay, .descDisplay {
+        width: 90%; /* Adjusts width to fit within mobile screens */
+    }
+}
+
+@media (min-width: 769px) {
+    /* Ensures horizontal layout on laptops and larger devices */
+    .weatherOutput {
+        flex-direction: row;
+    }
+}
+
+
+
+
+
+
+/* Individual info boxes */
+.infoBox {
+    background-color: #ffffff;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+}
+
+
+
+
